@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx expo *)",
+      "Bash(node -e \"console.log\\(require\\('./node_modules/@clerk/expo/package.json'\\).version\\)\")",
+      "Bash(xargs grep *)",
+      "Bash(python3 -c \"import sys,json; pkg=json.load\\(sys.stdin\\); exports=pkg.get\\('exports',{}\\); [print\\(k,'=>',v if isinstance\\(v,str\\) else v.get\\('types','?'\\)\\) for k,v in exports.items\\(\\) if 'token' in k.lower\\(\\)]\")",
+      "Bash(node -e \"const pkg = require\\('./node_modules/@clerk/expo/package.json'\\); const exports = pkg.exports || {}; Object.entries\\(exports\\).forEach\\(\\([k,v]\\) => { if \\(k.includes\\('token'\\)\\) console.log\\(k, '->', typeof v === 'string' ? v : JSON.stringify\\(v\\)\\); }\\);\")",
+      "Bash(node -e \"const pkg = require\\('./node_modules/@clerk/expo/package.json'\\); const exports = pkg.exports || {}; Object.entries\\(exports\\).forEach\\(\\([k,v]\\) => { if \\(!k.includes\\('native'\\) && !k.includes\\('apple'\\) && !k.includes\\('google'\\)\\) console.log\\(k, '->', typeof v === 'string' ? v : JSON.stringify\\(v\\).substring\\(0,80\\)\\); }\\);\")",
+      "Bash(python3 -c \"import sys,json; p=json.load\\(sys.stdin\\); print\\('version:', p.get\\('version'\\)\\); exports=p.get\\('exports',{}\\); print\\('exports keys:', list\\(exports.keys\\(\\)\\)[:5]\\)\")",
+      "Bash(node -e \"const p = require\\('./node_modules/@tanstack/query-core/package.json'\\); console.log\\('version:', p.version\\); const e = p.exports || {}; console.log\\('exports:', Object.keys\\(e\\).slice\\(0,5\\)\\);\")",
+      "Bash(node -e \"const p = require\\('./node_modules/@tanstack/query-core/package.json'\\); const e = p.exports['.']; console.log\\(JSON.stringify\\(e, null, 2\\)\\);\")",
+      "Bash(node -e \"const p = require\\('./node_modules/@clerk/expo/package.json'\\); console.log\\(JSON.stringify\\(p.dependencies, null, 2\\)\\);\")",
+      "Bash(node -e \"const p = require\\('./package.json'\\); console.log\\(JSON.stringify\\(p.dependencies, null, 2\\)\\);\")",
+      "Bash(node -e ' *)"
+    ]
+  }
+}
