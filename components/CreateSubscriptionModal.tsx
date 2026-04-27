@@ -46,6 +46,28 @@ interface CreateSubscriptionModalProps {
   onSubmit: (subscription: Subscription) => void;
 }
 
+const SERVICE_ICONS: Record<string, (typeof icons)[keyof typeof icons]> = {
+  adobe: icons.adobe,
+  canva: icons.canva,
+  claude: icons.claude,
+  dropbox: icons.dropbox,
+  figma: icons.figma,
+  github: icons.github,
+  medium: icons.medium,
+  netflix: icons.netflix,
+  notion: icons.notion,
+  openai: icons.openai,
+  spotify: icons.spotify,
+};
+
+function resolveIcon(name: string) {
+  const key = name.toLowerCase().trim();
+  for (const [service, icon] of Object.entries(SERVICE_ICONS)) {
+    if (key.includes(service)) return icon;
+  }
+  return icons.wallet;
+}
+
 const SHEET_HEIGHT = Dimensions.get("window").height * 0.85;
 
 const CreateSubscriptionModal = ({
@@ -90,7 +112,7 @@ const CreateSubscriptionModal = ({
         frequency === "Monthly"
           ? now.add(1, "month").toISOString()
           : now.add(1, "year").toISOString(),
-      icon: icons.wallet,
+      icon: resolveIcon(name),
       color: CATEGORY_COLORS[category],
     });
 

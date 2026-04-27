@@ -2,7 +2,6 @@ import CreateSubscriptionModal from "@/components/CreateSubscriptionModal";
 import ListHeading from "@/components/ListHeading";
 import SubscriptionCard from "@/components/SubscriptionCard";
 import UpcomingSubscriptionCard from "@/components/UpcomingSubscriptionCard";
-import { HOME_BALANCE, UPCOMING_SUBSCRIPTIONS } from "@/constants/data";
 import { icons } from "@/constants/icons";
 import images from "@/constants/images";
 import { useSubscriptions } from "@/context/SubscriptionsContext";
@@ -10,7 +9,7 @@ import { formatCurrency } from "@/lib/utils";
 import { useUser } from "@clerk/expo";
 import dayjs from "dayjs";
 import { styled } from "nativewind";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { FlatList, Image, Pressable, Text, View } from "react-native";
 import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context";
 
@@ -18,7 +17,8 @@ const SafeAreaView = styled(RNSafeAreaView);
 
 export default function App() {
   const { user } = useUser();
-  const { subscriptions, addSubscription } = useSubscriptions();
+  const { subscriptions, addSubscription, deleteSubscription } =
+    useSubscriptions();
   const [expandedSubscriptionId, setExpandedSubscriptionId] = useState<
     string | null
   >(null);
@@ -29,6 +29,43 @@ export default function App() {
     user?.fullName ||
     user?.emailAddresses[0]?.emailAddress ||
     "User";
+
+  const totalMonthly = useMemo(
+    () =>
+      subscriptions
+        .filter((s) => s.status !== "cancelled")
+        .reduce(
+          (sum, s) => sum + (s.billing === "Yearly" ? s.price / 12 : s.price),
+          0,
+        ),
+    [subscriptions],
+  );
+
+  const nextRenewal = useMemo(
+    () =>
+      subscriptions
+        .filter((s) => s.status !== "cancelled" && s.renewalDate)
+        .map((s) => s.renewalDate!)
+        .sort()[0],
+    [subscriptions],
+  );
+
+  const upcomingSubscriptions = useMemo<UpcomingSubscription[]>(
+    () =>
+      subscriptions
+        .filter((s) => s.status !== "cancelled" && s.renewalDate)
+        .map((s) => ({
+          id: s.id,
+          icon: s.icon,
+          name: s.name,
+          price: s.price,
+          currency: s.currency,
+          daysLeft: dayjs(s.renewalDate).diff(dayjs(), "day"),
+        }))
+        .filter((s) => s.daysLeft >= 0 && s.daysLeft <= 30)
+        .sort((a, b) => a.daysLeft - b.daysLeft),
+    [subscriptions],
+  );
 
   return (
     <SafeAreaView className="flex-1 p-5 bg-background">
@@ -54,10 +91,10 @@ export default function App() {
               <Text className="home-balance-label">Balance</Text>
               <View className="home-balance-row">
                 <Text className="home-balance-amount">
-                  {formatCurrency(HOME_BALANCE.amount)}
+                  {formatCurrency(totalMonthly)}
                 </Text>
                 <Text className="home-balance-date">
-                  {dayjs(HOME_BALANCE.nextRenewalDate).format("DD/MM/YYYY")}
+                  {nextRenewal ? dayjs(nextRenewal).format("DD/MM/YYYY") : "—"}
                 </Text>
               </View>
             </View>
@@ -66,7 +103,7 @@ export default function App() {
               <ListHeading title="Upcoming" />
 
               <FlatList
-                data={UPCOMING_SUBSCRIPTIONS}
+                data={upcomingSubscriptions}
                 renderItem={({ item }) => (
                   <UpcomingSubscriptionCard {...item} />
                 )}
@@ -80,7 +117,10 @@ export default function App() {
                 }
               />
             </View>
-            <ListHeading title="All Subscriptions" />
+            <ListHeading
+              title="All Subscriptions"
+              href="/(tabs)/subscriptions"
+            />
           </>
         )}
         data={subscriptions}
@@ -94,6 +134,7 @@ export default function App() {
                 prev === item.id ? null : item.id,
               )
             }
+            onDeletePress={() => deleteSubscription(item.id)}
           />
         )}
         extraData={expandedSubscriptionId}

@@ -229,6 +229,26 @@
         @apply font-sans-bold text-background;
     }
 
+    .sub-actions {
+        @apply mt-4 flex-row gap-3;
+    }
+
+    .sub-action-btn {
+        @apply flex-1 flex-row items-center justify-center gap-2 rounded-2xl border border-primary py-3;
+    }
+
+    .sub-action-btn-delete {
+        @apply border-destructive;
+    }
+
+    .sub-action-text-edit {
+        @apply font-sans-bold text-sm text-primary;
+    }
+
+    .sub-action-text-delete {
+        @apply font-sans-bold text-sm text-destructive;
+    }
+
     .home-empty-state {
         @apply py-4 text-sm font-sans-medium text-black/60;
     }

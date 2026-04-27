@@ -31,8 +31,8 @@ declare global {
   interface SubscriptionCardProps extends Omit<Subscription, "id"> {
     expanded: boolean;
     onPress: () => void;
-    onCancelPress?: () => void;
-    isCancelling?: boolean;
+    onDeletePress?: () => void;
+    onEditPress?: () => void;
   }
 
   interface UpcomingSubscription {
@@ -51,6 +51,7 @@ declare global {
 
   interface ListHeadingProps {
     title: string;
+    href?: string;
   }
 }
 
