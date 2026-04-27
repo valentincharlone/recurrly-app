@@ -13,7 +13,7 @@ const ListHeading = ({ title, href }: ListHeadingProps) => {
           className="list-action"
           onPress={() => router.push(href as any)}
         >
-          <Text className="list-action-text">View all</Text>
+          <Text className="list-action-text">Ver todas</Text>
         </TouchableOpacity>
       )}
     </View>

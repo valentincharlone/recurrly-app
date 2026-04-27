@@ -59,31 +59,31 @@ const SubscriptionCard = ({
           <View className="sub-details">
             <View className="sub-row">
               <View className="sub-row-copy">
-                <Text className="sub-label">Payment:</Text>
+                <Text className="sub-label">Pago:</Text>
                 <Text
                   className="sub-value"
                   numberOfLines={1}
                   ellipsizeMode="tail"
                 >
-                  {paymentMethod?.trim() ?? "Not provided"}
+                  {paymentMethod?.trim() ?? "No especificado"}
                 </Text>
               </View>
             </View>
             <View className="sub-row">
               <View className="sub-row-copy">
-                <Text className="sub-label">Category:</Text>
+                <Text className="sub-label">Categoría:</Text>
                 <Text
                   className="sub-value"
                   numberOfLines={1}
                   ellipsizeMode="tail"
                 >
-                  {(category?.trim() || plan?.trim()) ?? "Not provided"}
+                  {(category?.trim() || plan?.trim()) ?? "No especificado"}
                 </Text>
               </View>
             </View>
             <View className="sub-row">
               <View className="sub-row-copy">
-                <Text className="sub-label">Started:</Text>
+                <Text className="sub-label">Inicio:</Text>
                 <Text
                   className="sub-value"
                   numberOfLines={1}
@@ -97,7 +97,7 @@ const SubscriptionCard = ({
             </View>
             <View className="sub-row">
               <View className="sub-row-copy">
-                <Text className="sub-label">Renewal date:</Text>
+                <Text className="sub-label">Renovación:</Text>
                 <Text
                   className="sub-value"
                   numberOfLines={1}
@@ -111,7 +111,7 @@ const SubscriptionCard = ({
             </View>
             <View className="sub-row">
               <View className="sub-row-copy">
-                <Text className="sub-label">Status:</Text>
+                <Text className="sub-label">Estado:</Text>
                 <Text
                   className="sub-value"
                   numberOfLines={1}
@@ -130,7 +130,7 @@ const SubscriptionCard = ({
               className={clsx("sub-action-btn", !onEditPress && "opacity-30")}
             >
               <Feather name="edit-2" size={16} color={colors.primary} />
-              <Text className="sub-action-text-edit">Edit</Text>
+              <Text className="sub-action-text-edit">Editar</Text>
             </Pressable>
 
             <Pressable
@@ -139,7 +139,7 @@ const SubscriptionCard = ({
               className={clsx("sub-action-btn sub-action-btn-delete", !onDeletePress && "opacity-30")}
             >
               <Feather name="trash-2" size={16} color={colors.destructive} />
-              <Text className="sub-action-text-delete">Delete</Text>
+              <Text className="sub-action-text-delete">Eliminar</Text>
             </Pressable>
           </View>
         </View>

@@ -88,7 +88,7 @@ export default function App() {
             </View>
 
             <View className="home-balance-card">
-              <Text className="home-balance-label">Balance</Text>
+              <Text className="home-balance-label">Total mensual</Text>
               <View className="home-balance-row">
                 <Text className="home-balance-amount">
                   {formatCurrency(totalMonthly)}
@@ -100,7 +100,7 @@ export default function App() {
             </View>
 
             <View className="mb-5">
-              <ListHeading title="Upcoming" />
+              <ListHeading title="Próximas" />
 
               <FlatList
                 data={upcomingSubscriptions}
@@ -112,13 +112,13 @@ export default function App() {
                 showsHorizontalScrollIndicator={false}
                 ListEmptyComponent={
                   <Text className="home-empty-state">
-                    No upcoming renewals yet.
+                    Sin renovaciones próximas.
                   </Text>
                 }
               />
             </View>
             <ListHeading
-              title="All Subscriptions"
+              title="Todas las suscripciones"
               href="/(tabs)/subscriptions"
             />
           </>
@@ -141,7 +141,7 @@ export default function App() {
         ItemSeparatorComponent={() => <View className="h-4" />}
         showsVerticalScrollIndicator={false}
         ListEmptyComponent={
-          <Text className="home-empty-state">No subscriptions yet.</Text>
+          <Text className="home-empty-state">Sin suscripciones aún.</Text>
         }
         contentContainerClassName="pb-18"
       />

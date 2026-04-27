@@ -28,13 +28,13 @@ const Subscriptions = () => {
     <SafeAreaView className="flex-1 bg-background">
       <View className="px-5 pt-5 pb-3">
         <Text className="text-3xl font-sans-bold text-primary mb-5">
-          Subscriptions
+          Suscripciones
         </Text>
         <View className="flex-row items-center rounded-2xl border border-border bg-card px-4">
           <Image source={icons.menu} className="size-5 opacity-40 mr-3" />
           <TextInput
             className="flex-1 py-4 text-base font-sans-medium text-primary"
-            placeholder="Search by name, category or plan..."
+            placeholder="Buscar por nombre, categoría o plan..."
             placeholderTextColor="rgba(0,0,0,0.35)"
             value={query}
             onChangeText={setQuery}
@@ -65,7 +65,7 @@ const Subscriptions = () => {
         ListEmptyComponent={
           <View className="items-center pt-16">
             <Text className="text-base font-sans-semibold text-muted-foreground">
-              No subscriptions match &quot;{query}&quot;
+              Sin resultados para &quot;{query}&quot;
             </Text>
           </View>
         }

@@ -16,28 +16,31 @@ import {
 } from "react-native";
 
 const CATEGORIES = [
-  "Entertainment",
-  "AI Tools",
-  "Developer Tools",
-  "Design",
-  "Productivity",
-  "Cloud",
-  "Music",
-  "Other",
+  "Entretenimiento",
+  "Herramientas IA",
+  "Herramientas Dev",
+  "Diseño",
+  "Productividad",
+  "Nube",
+  "Música",
+  "Otro",
 ] as const;
 
 type Category = (typeof CATEGORIES)[number];
-type Frequency = "Monthly" | "Yearly";
+type Frequency = "Mensual" | "Anual";
+
+const CURRENCIES = ["ARS", "USD", "BRL", "MXN", "CLP", "COP", "UYU"] as const;
+type Currency = (typeof CURRENCIES)[number];
 
 const CATEGORY_COLORS: Record<Category, string> = {
-  Entertainment: "#fdd5b1",
-  "AI Tools": "#b8d4e3",
-  "Developer Tools": "#e8def8",
-  Design: "#f5c542",
-  Productivity: "#b8e8d0",
-  Cloud: "#c8e6f5",
-  Music: "#f9d4e8",
-  Other: "#e8e8e8",
+  Entretenimiento: "#fdd5b1",
+  "Herramientas IA": "#b8d4e3",
+  "Herramientas Dev": "#e8def8",
+  Diseño: "#f5c542",
+  Productividad: "#b8e8d0",
+  Nube: "#c8e6f5",
+  Música: "#f9d4e8",
+  Otro: "#e8e8e8",
 };
 
 interface CreateSubscriptionModalProps {
@@ -77,8 +80,9 @@ const CreateSubscriptionModal = ({
 }: CreateSubscriptionModalProps) => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
-  const [frequency, setFrequency] = useState<Frequency>("Monthly");
-  const [category, setCategory] = useState<Category>("Other");
+  const [frequency, setFrequency] = useState<Frequency>("Mensual");
+  const [currency, setCurrency] = useState<Currency>("ARS");
+  const [category, setCategory] = useState<Category>("Otro");
 
   const priceNum = parseFloat(price);
   const isValid = name.trim().length > 0 && !isNaN(priceNum) && priceNum > 0;
@@ -86,8 +90,9 @@ const CreateSubscriptionModal = ({
   const resetForm = () => {
     setName("");
     setPrice("");
-    setFrequency("Monthly");
-    setCategory("Other");
+    setFrequency("Mensual");
+    setCurrency("ARS");
+    setCategory("Otro");
   };
 
   const handleClose = () => {
@@ -103,13 +108,13 @@ const CreateSubscriptionModal = ({
       id: `sub-${Date.now()}`,
       name: name.trim(),
       price: priceNum,
-      currency: "USD",
+      currency,
       billing: frequency,
       category,
       status: "active",
       startDate: now.toISOString(),
       renewalDate:
-        frequency === "Monthly"
+        frequency === "Mensual"
           ? now.add(1, "month").toISOString()
           : now.add(1, "year").toISOString(),
       icon: resolveIcon(name),
@@ -148,7 +153,7 @@ const CreateSubscriptionModal = ({
           onPress={() => {}}
         >
           <View className="modal-header">
-            <Text className="modal-title">New Subscription</Text>
+            <Text className="modal-title">Nueva suscripción</Text>
             <Pressable className="modal-close" onPress={handleClose}>
               <Text className="modal-close-text">✕</Text>
             </Pressable>
@@ -163,12 +168,12 @@ const CreateSubscriptionModal = ({
             <View className="modal-body">
               {/* Name */}
               <View className="gap-2">
-                <Text className="auth-label">Name</Text>
+                <Text className="auth-label">Nombre</Text>
                 <TextInput
                   className="auth-input"
                   value={name}
                   onChangeText={setName}
-                  placeholder="e.g. Netflix"
+                  placeholder="ej. Netflix"
                   placeholderTextColor="rgba(0,0,0,0.35)"
                   autoCapitalize="words"
                   autoCorrect={false}
@@ -178,7 +183,7 @@ const CreateSubscriptionModal = ({
 
               {/* Price */}
               <View className="gap-2">
-                <Text className="auth-label">Price</Text>
+                <Text className="auth-label">Precio</Text>
                 <TextInput
                   className="auth-input"
                   value={price}
@@ -190,11 +195,37 @@ const CreateSubscriptionModal = ({
                 />
               </View>
 
+              {/* Currency */}
+              <View className="gap-2">
+                <Text className="auth-label">Moneda</Text>
+                <View className="picker-row flex-wrap">
+                  {CURRENCIES.map((c) => (
+                    <Pressable
+                      key={c}
+                      className={clsx(
+                        "picker-option",
+                        currency === c && "picker-option-active",
+                      )}
+                      onPress={() => setCurrency(c)}
+                    >
+                      <Text
+                        className={clsx(
+                          "picker-option-text",
+                          currency === c && "picker-option-text-active",
+                        )}
+                      >
+                        {c}
+                      </Text>
+                    </Pressable>
+                  ))}
+                </View>
+              </View>
+
               {/* Frequency */}
               <View className="gap-2">
-                <Text className="auth-label">Frequency</Text>
+                <Text className="auth-label">Frecuencia</Text>
                 <View className="picker-row">
-                  {(["Monthly", "Yearly"] as const).map((f) => (
+                  {(["Mensual", "Anual"] as const).map((f) => (
                     <Pressable
                       key={f}
                       className={clsx(
@@ -218,7 +249,7 @@ const CreateSubscriptionModal = ({
 
               {/* Category */}
               <View className="gap-2">
-                <Text className="auth-label">Category</Text>
+                <Text className="auth-label">Categoría</Text>
                 <View className="category-scroll">
                   {CATEGORIES.map((cat) => (
                     <Pressable
@@ -251,7 +282,7 @@ const CreateSubscriptionModal = ({
                 onPress={handleSubmit}
                 disabled={!isValid}
               >
-                <Text className="auth-button-text">Add Subscription</Text>
+                <Text className="auth-button-text">Agregar suscripción</Text>
               </Pressable>
             </View>
           </ScrollView>
